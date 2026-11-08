@@ -1,29 +1,11 @@
-"""
-car_utils.py
-============
-Shared, reusable code for the Indian Pre-Owned Car Price Prediction project.
-
-Both the Jupyter notebook (training) and the Streamlit app (inference) import
-this module, so the *exact same* cleaning + feature engineering is applied
-at training time and at prediction time (no train/serve skew).
-
-Contents
---------
-load_data()        : read a CSV and normalise column names (e.g. 'Distance ' -> 'Distance')
-CarPreprocessor    : scikit-learn compatible transformer (cleaning, imputation,
-                     feature engineering, encoding)
-regression_report(): RMSE / MAE / R2 helper
-"""
 from __future__ import annotations
-
 import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-# --------------------------------------------------------------------------- #
+
 # Constants
-# --------------------------------------------------------------------------- #
 CURRENT_YEAR = 2025                 # dataset reference year (manufacture_year + Age = 2025)
 OWNER_MAP = {"First": 1, "Second": 2, "Third": 3, "Fourth & Above": 4}
 
@@ -41,9 +23,7 @@ RAW_FEATURES = [
 ]
 
 
-# --------------------------------------------------------------------------- #
 # I/O helpers
-# --------------------------------------------------------------------------- #
 def standardise_columns(df: pd.DataFrame) -> pd.DataFrame:
     """Strip stray whitespace from column names (the raw file has 'Distance ')."""
     df = df.copy()
@@ -56,9 +36,7 @@ def load_data(path_or_buffer) -> pd.DataFrame:
     return standardise_columns(pd.read_csv(path_or_buffer))
 
 
-# --------------------------------------------------------------------------- #
 # Preprocessing transformer
-# --------------------------------------------------------------------------- #
 class CarPreprocessor(BaseEstimator, TransformerMixin):
     """Clean, impute, engineer and encode the raw car dataframe.
 
@@ -112,9 +90,7 @@ class CarPreprocessor(BaseEstimator, TransformerMixin):
     def get_feature_names_out(self, input_features=None):
         return np.array(self.feature_names_)
 
-    # ------------------------------------------------------------------ #
     # internals
-    # ------------------------------------------------------------------ #
     @staticmethod
     def _basic_clean(X: pd.DataFrame) -> pd.DataFrame:
         """Column-name tidy, type coercion and invalid-value -> NaN (no statistics needed)."""
@@ -204,9 +180,7 @@ def _mode(s: pd.Series):
     return m.iloc[0] if len(m) else np.nan
 
 
-# --------------------------------------------------------------------------- #
 # Evaluation helper
-# --------------------------------------------------------------------------- #
 def regression_report(y_true, y_pred) -> dict:
     """RMSE, MAE and R2 on the original (rupee) scale."""
     return {

@@ -1,20 +1,6 @@
-"""
-Used Car Price Estimator (India) - Streamlit application.
-
-Run from the project root:
-    streamlit run app.py
-
-Sections
-    Estimate           single-vehicle valuation with price ranges and sensitivity charts
-    Batch predictions  upload a CSV, receive predictions, download the result
-    Market trends      median price by age and distance for selected makers
-    Model details      hold-out accuracy, model comparison, feature importance
-"""
 from __future__ import annotations
-
 import re
 from pathlib import Path
-
 import altair as alt
 import joblib
 import numpy as np
@@ -28,9 +14,7 @@ ROOT = Path(__file__).parent
 MODEL_PATH = ROOT / "models" / "car_price_model.joblib"
 SAMPLE_INPUT_PATH = ROOT / "data" / "Cap_Test_Data_2025.csv"
 
-# --------------------------------------------------------------------------- #
 # Visual style: restrained palette, system fonts, no decoration
-# --------------------------------------------------------------------------- #
 BUTTER = "#FFF2BA"       # page background (Buttermilk)
 MIDNIGHT = "#0F3C65"     # headings, sidebar, main data series (Midnight Blue)
 BLUE_MID = "#4F7DAA"     # mid tint of the blue, for supporting data
