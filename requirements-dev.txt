@@ -1,0 +1,7 @@
+# Everything needed to re-run the notebook and the tests.
+-r requirements.txt
+xgboost>=2.0,<4
+matplotlib>=3.8
+seaborn>=0.13
+ipykernel>=6
+pytest>=8
